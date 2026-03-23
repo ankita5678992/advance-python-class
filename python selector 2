@@ -1,0 +1,117 @@
+import mysql.connector
+
+
+conn = mysql.connector.connect(
+    user="root",
+    password="ANKITA7978",
+    host="localhost",
+    port=3306   
+
+)
+
+print("connected")
+
+
+print("Connected")
+
+cursor = conn.cursor()
+
+cursor.execute("CREATE DATABASE IF NOT EXISTS giet2")
+
+cursor.execute("USE giet2")
+
+cursor.execute("DROP TABLE IF EXISTS giet2")
+
+cursor.execute("""
+CREATE TABLE giet2 (
+    roll INT,
+    name VARCHAR(50),
+    address VARCHAR(50),
+    desig VARCHAR(50),
+    salary INT,
+    gender CHAR(1)
+)
+""")
+
+data = [
+    (101, 'aman', 'delhi', 'doctor', 25000, 'M'),
+    (102, 'priya', 'raipur', 'teacher', 18000, 'F'),
+    (103, 'rohan', 'mumbai', 'engineer', 30000, 'M'),
+    (104, 'sanya', 'raipur', 'doctor', 22000, 'F'),
+    (105, 'vikram', 'delhi', 'engineer', 27000, 'M'),
+    (106, 'neha', 'pune', 'teacher', 15000, 'F'),
+    (107, 'anuj', 'raipur', 'doctor', 32000, 'M')
+]
+
+cursor.executemany("INSERT INTO giet2 VALUES (%s,%s,%s,%s,%s,%s)", data)
+conn.commit()
+
+def run_query(query, description):
+    print("\n" + description)
+    cursor.execute(query)
+    for row in cursor.fetchall():
+        print(row)
+
+
+# q1
+run_query("SELECT * FROM giet2;", "1. All data from giet2")
+
+# q2
+run_query("SELECT name FROM giet2;", "2. Only name column")
+
+# q3
+run_query("SELECT name, address FROM giet2;", "3. Name and address")
+
+# q4
+run_query("SELECT roll, salary FROM giet2;", "4. Roll and salary")
+
+# q5
+run_query("SELECT * FROM giet2 WHERE name='aman';", "5. Name = aman")
+
+# q6
+run_query("SELECT * FROM giet2 WHERE address='delhi';", "6. Address = delhi")
+
+# q7
+run_query("SELECT * FROM giet2 WHERE gender='M';", "7. Gender = M")
+
+# q8
+run_query("SELECT * FROM giet2 WHERE desig='doctor';", "8. Designation = doctor")
+
+# q9
+run_query("SELECT * FROM giet2 WHERE salary=15000;", "9. Salary = 15000")
+
+# q10
+run_query("SELECT * FROM giet2 WHERE salary>20000;", "10. Salary > 20000")
+
+# q11
+run_query("SELECT * FROM giet2 WHERE salary<30000;", "11. Salary < 30000")
+
+# q12
+run_query("SELECT * FROM giet2 WHERE gender='M' AND salary>20000;", "12. Male AND salary > 20000")
+
+# q13
+run_query("SELECT * FROM giet2 WHERE gender='F' OR address='raipur';", "13. Female OR address = raipur")
+
+# q14
+run_query("SELECT * FROM giet2 WHERE name LIKE 'a%';", "14. Name starts with 'a'")
+
+# q15
+run_query("SELECT * FROM giet2 WHERE name LIKE '%h';", "15. Name ends with 'h'")
+
+# q16
+run_query("SELECT * FROM giet2 WHERE address LIKE '%pur%';", "16. Address contains 'pur'")
+
+# q17
+run_query("SELECT * FROM giet2 ORDER BY name ASC;", "17. Sorted by name ASC")
+
+# q18
+run_query("SELECT * FROM giet2 ORDER BY salary DESC;", "18. Sorted by salary DESC")
+
+# q19
+run_query("SELECT COUNT(*) FROM giet2;", "19. Total employees")
+
+# q20
+run_query("SELECT COUNT(*) FROM giet2 WHERE gender='M';", "20. Count male employees")
+
+cursor.close()
+conn.close()
