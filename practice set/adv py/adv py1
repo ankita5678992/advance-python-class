@@ -1,0 +1,8 @@
+import re
+pattern = '^a.*n$'
+test_string = "Python"
+
+if re.search(pattern, test_string):
+    print("Pattern found")
+else:
+    print("Not found")
